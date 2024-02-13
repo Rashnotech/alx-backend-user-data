@@ -12,11 +12,10 @@ class Auth:
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
         """a method that request authentication
         Return:
-            path: a variable that stores the url path 
+            path: a variable that stores the url path
             excluded_paths: a List that contains the excluded path
         """
         return False
-
 
     def authorization_header(self, request=None) -> str:
         """a method that authorize header
@@ -24,7 +23,6 @@ class Auth:
             request: a variable that takes request
         """
         return request
-
 
     def current_user(self, request=None) -> TypeVar('User'):
         """a method that keep current user

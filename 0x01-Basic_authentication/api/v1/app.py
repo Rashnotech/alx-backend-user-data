@@ -8,10 +8,17 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 
 
-
 app = Flask(__name__)
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 app.register_blueprint(app_views)
+
+
+
+@app.errorhandler(401)
+def unauthorized(error) -> str:
+    """Handling unauthorized"""
+    return jsonify({'error': 'Unauthorized'}), 401
+
 
 @app.errorhandler(404)
 def not_found(error) -> str:

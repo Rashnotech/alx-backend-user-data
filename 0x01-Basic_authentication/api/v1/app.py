@@ -4,13 +4,35 @@ Route module for the API
 """
 from os import getenv
 from api.v1.views import app_views
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request, abort
 from flask_cors import CORS
 
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
+auth = getenv('AUTH_TYPE', None)
 app.register_blueprint(app_views)
+
+
+if auth:
+    from api.v1.auth.auth import Auth
+    auth = Auth()
+
+
+@app.before_request
+def handle_request():
+    """a middleware method"""
+    if auth:
+        exempt_endpoints = [
+            '/api/v1/status/',
+            '/api/v1/unauthorized/',
+            '/api/v1/forbidden/'
+            ]
+        if auth.require_auth(request.path, exempt_endpoints):
+            if not auth.authorization_header(request):
+                abort(401)
+            if not auth.current_user(request):
+                abort(403)
 
 
 @app.errorhandler(401)

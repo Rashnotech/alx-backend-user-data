@@ -29,11 +29,13 @@ class Auth:
         Return:
             request: a variable that takes request
         """
-        return request
+        if request:
+            return request.headers.get('Authorization')
+        return None
 
     def current_user(self, request=None) -> TypeVar('User'):
         """a method that keep current user
         Return
            the current requested user
         """
-        return request
+        return None

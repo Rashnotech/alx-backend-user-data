@@ -2,6 +2,7 @@
 """ an authentication module"""
 from flask import request
 from typing import TypeVar, List
+import re
 
 
 class Auth:
@@ -15,7 +16,13 @@ class Auth:
             path: a variable that stores the url path
             excluded_paths: a List that contains the excluded path
         """
-        return False
+        if path and excluded_paths and len(excluded_paths):
+            for url in excluded_paths:
+                url.strip()
+                path += '/*'
+                if re.match(url, path):
+                    return False
+        return True
 
     def authorization_header(self, request=None) -> str:
         """a method that authorize header

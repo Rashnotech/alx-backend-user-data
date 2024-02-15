@@ -3,6 +3,7 @@
 from .auth import Auth
 import binascii
 import base64
+from typing import TypeVar
 
 
 class BasicAuth(Auth):
@@ -40,3 +41,22 @@ class BasicAuth(Auth):
             return (user, password)
         except Exception:
             return (None, None)
+
+    def user_object_from_credentials(self, user_email:
+                                     str, user_pwd: str) -> TypeVar('User'):
+        """User object"""
+        from models.user import User
+
+        if user_email is None or not isinstance(user_email, str):
+            return None
+        if user_pwd is None or not isinstance(user_pwd, str):
+            return None
+        user_info = {'email': user_email}
+        try:
+            users = User.search(user_info)
+        except Exception:
+            return None
+        if len(users) > 0:
+            if users[0].is_valid_password(user_pwd):
+                return users[0]
+        return None

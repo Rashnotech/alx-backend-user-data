@@ -37,7 +37,7 @@ class BasicAuth(Auth):
            or not isinstance(decoded_base64_authorization_header, str):
             return (None, None)
         try:
-            user, password = decoded_base64_authorization_header.split(':')
+            user, password = decoded_base64_authorization_header.split(':', 1)
             return (user, password)
         except Exception:
             return (None, None)

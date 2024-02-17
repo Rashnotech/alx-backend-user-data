@@ -33,9 +33,12 @@ def handle_request():
         exempt_endpoints = [
             '/api/v1/status/',
             '/api/v1/unauthorized/',
-            '/api/v1/forbidden/'
+            '/api/v1/forbidden/',
+            '/api/v1/auth_session/login/'
             ]
         if auth.require_auth(request.path, exempt_endpoints):
+            if auth.session_cookie(request):
+                abort(401)
             if not auth.authorization_header(request):
                 abort(401)
             current_user = auth.current_user(request)

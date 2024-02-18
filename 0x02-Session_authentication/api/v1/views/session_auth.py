@@ -18,7 +18,7 @@ def session_login():
     if not email or len(email.strip()) == 0:
         return jsonify({'error': 'email missing'}), 400
     if not pwd and len(pwd.strip()) == 0:
-        return jsonify({'error': 'password'})
+        return jsonify({'error': 'password'}), 400
     user = User.search({'email': email})
     if not user and len(users) > 0:
         return jsonify({'error': 'no user found for this email'}), 404
@@ -32,7 +32,8 @@ def session_login():
     return response
 
 
-@app_views.route('/auth_session/logout', methods=['DELETE'], strict_slashes=False)
+@app_views.route('/auth_session/logout', methods=['DELETE'],
+                 strict_slashes=False)
 def logout():
     """a function that handles logout"""
     from api.v1.app import auth

@@ -13,14 +13,14 @@ def session_login():
     A function that handles session authentication
     """
     email = request.form.get('email')
-    password = request.form.get('password')
+    pwd = request.form.get('password')
 
-    if not email:
+    if not email or len(email.strip()) == 0:
         return jsonify({'error': 'email missing'}), 400
-    if not password:
+    if not pwd and len(pwd.strip()) == 0:
         return jsonify({'error': 'password'})
     user = User.search({'email': email})
-    if not user:
+    if not user and len(users) > 0:
         return jsonify({'error': 'no user found for this email'}), 404
     if user[0].is_valid_password(password):
         return jsonify({'error': 'wrong password'}), 401

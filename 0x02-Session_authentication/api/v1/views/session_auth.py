@@ -15,17 +15,19 @@ def session_login():
     email = request.form.get('email')
     pwd = request.form.get('password')
 
-    if not email:
+    if not email or len(email.strip()) == 0:
         return jsonify({'error': 'email missing'}), 400
-    if not pwd:
+    if not pwd or len(pwd.strip()) == 0:
         return jsonify({'error': 'password'}), 400
-    user = User.search({'email': email})
-    if not user and len(users) > 0:
+    try:
+        user = User.search({'email': email})
+    except Exception:
         return jsonify({'error': 'no user found for this email'}), 404
-    if user[0].is_valid_password(password):
+    if len(users) > 0:
+        user = user[0]
+    if not user.is_valid_password(password):
         return jsonify({'error': 'wrong password'}), 401
     from api.v1.app import auth
-    user = user[0]
     session_id = auth.create_session(user.id)
     response = jsonify(user.to_json())
     response.set_cookie(getenv('SESSION_NAME'), session_id)

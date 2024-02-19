@@ -15,9 +15,9 @@ def session_login():
     email = request.form.get('email')
     pwd = request.form.get('password')
 
-    if not email or len(email.strip()) == 0:
+    if not email:
         return jsonify({'error': 'email missing'}), 400
-    if not pwd and len(pwd.strip()) == 0:
+    if not pwd:
         return jsonify({'error': 'password'}), 400
     user = User.search({'email': email})
     if not user and len(users) > 0:

@@ -19,9 +19,8 @@ def session_login():
         return jsonify({'error': 'email missing'}), 400
     if not pwd:
         return jsonify({'error': 'password missing'}), 400
-    try:
-        user = User.search({'email': email})
-    except Exception:
+    user = User.search({'email': email})
+    if not user or len(user) == 0:
         return jsonify({'error': 'no user found for this email'}), 404
     user = user[0]
     if not user.is_valid_password(pwd):

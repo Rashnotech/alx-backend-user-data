@@ -24,7 +24,7 @@ def session_login():
         user = user[0]
     except Exception:
         return jsonify({'error': 'no user found for this email'}), 404
-    if not user.is_valid_password():
+    if user.is_valid_password(pwd):
         return jsonify({'error': 'wrong password'}), 401
     from api.v1.app import auth
     session_id = auth.create_session()

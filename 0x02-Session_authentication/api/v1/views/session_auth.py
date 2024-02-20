@@ -33,8 +33,6 @@ def session_login():
     return response
 
 
-
-
 @app_views.route('/auth_session/logout', methods=['DELETE'],
                  strict_slashes=False)
 def logout():

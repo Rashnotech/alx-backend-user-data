@@ -15,6 +15,8 @@ class SessionDBAuth(SessionExpAuth):
         a method that create session
         """
         session_id = super().create_session(userid)
+        if not isinstance(session_id, str):
+            return None
         kwargs = {'user_id': userid, 'session_id': session_id}
         user_session = UserSession(**kwargs)
         user_session.save()
@@ -24,6 +26,8 @@ class SessionDBAuth(SessionExpAuth):
         try:
             user_session = UserSession.search({'session_id': session_id})
         except Exception:
+            return None
+        if len(user_session) < 1:
             return None
         user_session = users_session[0]
         created_at = user_session.created_at

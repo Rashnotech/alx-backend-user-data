@@ -15,7 +15,7 @@ class SessionExpAuth(SessionAuth):
         super().__init__()
         session_duration_str = getenv('SESSION_DURATION')
         try:
-            session_duration = int(session_duration_str)
+            self.session_duration = int(session_duration_str)
         except (TypeError, ValueError):
             session_duration = 0
 
@@ -25,8 +25,8 @@ class SessionExpAuth(SessionAuth):
         if not session_id:
             return None
         session_dict = {
-            'user_id': user_id,
-            'created_at': datetime.now()}
+                'user_id': user_id,
+                'created_at': datetime.now()}
         self.user_id_by_session_id[session_id] = session_dict
         return session_id
 
@@ -40,6 +40,7 @@ class SessionExpAuth(SessionAuth):
                 if self.session_duration <= 0:
                     return user_id
                 if created_at:
-                    if created_at + timedelta(seconds=self.session_duration):
+                    time = session_duration
+                    if created_at + timedelta(seconds=time) >= datetime.now():
                         return user_id
         return None

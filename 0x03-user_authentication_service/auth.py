@@ -2,6 +2,7 @@
 """a module that handle authentication"""
 import bcrypt
 from db import DB
+import uuid
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import InvalidRequestError
 from user import User
@@ -39,3 +40,7 @@ class Auth:
         except (InvalidRequestError, NoResultFound):
             return False
         return False
+
+    def _generate_uuid(self,):
+        """a method that generate uuid"""
+        return uuid.uuid4()

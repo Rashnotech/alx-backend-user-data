@@ -55,4 +55,3 @@ class Auth:
         except Exception:
             return None
         return session_id
-

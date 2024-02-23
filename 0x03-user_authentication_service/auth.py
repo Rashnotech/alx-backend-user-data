@@ -45,3 +45,14 @@ class Auth:
         except (InvalidRequestError, NoResultFound):
             return False
         return False
+
+    def create_session(self, email: str):
+        """a method that creates a session"""
+        try:
+            user = self._db.find_user_by(email=email)
+            if user:
+                session_id = _generate_uuid()
+        except Exception:
+            return None
+        return session_id
+

@@ -8,9 +8,14 @@ from sqlalchemy.exc import InvalidRequestError
 from user import User
 
 
-def _hash_password(password):
+def _hash_password(password) -> str:
     """a method that handles hashing of password"""
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
+
+def _generate_uuid() -> str:
+    """a method that generate uuid"""
+    return uuid.uuid4()
 
 
 class Auth:
@@ -40,7 +45,3 @@ class Auth:
         except (InvalidRequestError, NoResultFound):
             return False
         return False
-
-    def _generate_uuid(self,):
-        """a method that generate uuid"""
-        return uuid.uuid4()

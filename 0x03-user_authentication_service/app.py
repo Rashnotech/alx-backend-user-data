@@ -28,13 +28,16 @@ def register():
 @app.route('/sessions', methods=['POST'], strict_slashes=False)
 def login():
     """a method that handles user login"""
-    try:
-        email = request.form.get('email')
-        pwd = request.form.get('password')
-        if AUTH.valid_login(email, password):
-            return jsonify({'email': email, 'message': 'logged in'})
-    except ValueError:
+    email = request.form.get('email')
+    pwd = request.form.get('password')
+    if not (email and pwd):
         abort(401)
+    session_id = AUTH.create_session(email)
+    if session_id is None or not AUTH.valid_login(email, pwd):
+        abort(401)
+    response = jsonify({'email': email, 'message': 'logged in'})
+    response.set_cookie('session_id', session_id)
+    return res
 
 
 if __name__ == '__main__':

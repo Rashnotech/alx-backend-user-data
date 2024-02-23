@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Flask module"""
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, abort
 from auth import Auth
 
 app = Flask(__name__)
@@ -37,7 +37,7 @@ def login():
         abort(401)
     response = jsonify({'email': email, 'message': 'logged in'})
     response.set_cookie('session_id', session_id)
-    return res
+    return response
 
 
 if __name__ == '__main__':

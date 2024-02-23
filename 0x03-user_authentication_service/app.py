@@ -15,7 +15,7 @@ def index():
 
 @app.route('/users', methods=['POST'], strict_slashes=False)
 def register():
-    """a module that register users"""
+    """a method that register users"""
     try:
         email = request.form.get('email')
         password = request.form.get('password')
@@ -23,6 +23,18 @@ def register():
     except ValueError:
         return jsonify({'message': 'email already registered'}), 400
     return jsonify({'email': email, 'message': 'user created'})
+
+
+@app.route('/sessions', methods=['POST'], strict_slashes=False)
+def login():
+    """a method that handles user login"""
+    try:
+        email = request.form.get('email')
+        pwd = request.form.get('password')
+        if AUTH.valid_login(email, password):
+            return jsonify({'email': email, 'message': 'logged in'})
+    except ValueError:
+        abort(401)
 
 
 if __name__ == '__main__':

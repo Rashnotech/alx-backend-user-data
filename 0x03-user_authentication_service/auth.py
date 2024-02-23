@@ -31,7 +31,7 @@ class Auth:
             user = self._db.find_user_by(email=email)
             if user:
                 raise ValueError(f"<user's {email}> already exists")
-        except NoResultFound:
+        except (InvalidRequestError, NoResultFound):
             pwd = _hash_password(password)
             user = self._db.add_user(email, pwd)
             return user
@@ -52,6 +52,7 @@ class Auth:
             user = self._db.find_user_by(email=email)
             if user:
                 session_id = _generate_uuid()
-        except Exception:
+                self._db.update_user(user.id, session_id=session_id)
+        except (InvalidRequestError, NoResultFound):
             return None
         return session_id

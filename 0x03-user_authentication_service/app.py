@@ -76,7 +76,7 @@ def reset_password():
 def update_password():
     """a method that update user password"""
     email = request.form.get('email')
-    token = request.form.get('token')
+    token = request.form.get('reset_token')
     pwd = request.form.get('new_password')
     try:
         AUTH.update_password(token, pwd)

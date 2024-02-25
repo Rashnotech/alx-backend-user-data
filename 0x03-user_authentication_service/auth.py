@@ -8,7 +8,7 @@ from sqlalchemy.exc import InvalidRequestError
 from user import User
 
 
-def _hash_password(password):
+def _hash_password(password: str) -> str:
     """a method that handles hashing of password"""
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 

@@ -38,7 +38,7 @@ class DB:
         self._session.commit()
         return user
 
-    def find_user_by(self, **kwargs: dict) -> User:
+    def find_user_by(self, **kwargs: dict):
         """a method that find the user"""
         for key, value in kwargs.items():
             if not hasattr(User, key):
